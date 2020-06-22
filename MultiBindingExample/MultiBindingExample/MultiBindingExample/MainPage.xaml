@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="MultiBindingExample.MainPage"
+             xmlns:converters="clr-namespace:MultiBindingExample.Converters;assembly=MultiBindingExample"
+             Title="MainPage">
+
+    <StackLayout>
+        <!-- Place new controls here -->
+        <CollectionView x:Name="SampleCollectionView">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <Label Grid.Row="0" Text="{Binding SimpleBinding}"></Label>
+                        <Label Grid.Row="1">
+                            <Label.Text>
+                                <MultiBinding StringFormat="{}{0} {1}">
+                                    <Binding Path="JoinBinding1"></Binding> <!-- These work -->
+                                        <Binding Path="JoinBinding2"></Binding> <!-- These work -->
+                                </MultiBinding>
+                            </Label.Text>
+                        </Label>
+                        <Image Grid.Row="2">
+                            <Image.Source>
+                                <MultiBinding Converter="{converters:ImageSourceConverter}">
+                                    <Binding Path="Host"></Binding> <!-- This is getting a null -->
+                                    <Binding Path="Url"></Binding> <!-- This is getting a null -->
+
+                                </MultiBinding>
+                            </Image.Source>
+                        </Image>
+                        <Label Grid.Row="3">End Row</Label>
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </StackLayout>
+
+</ContentPage>
